@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .target {
+        width: 70%;
+        margin: 0 auto;
+      }
+      table {
+        width: 100%;
+        border: black 1px solid;
+        border-collapse: collapse;
+      }
+      tr,
+      td,
+      th {
+        text-align: center;
+        border: black 1px solid;
+      }
+    </style>
+  </head>
+  <body onload="init()">
+    <div class="target">
+      <table id="table">
+        <tr>
+          <th>이름</th>
+          <th>국어</th>
+          <th>수학</th>
+          <th>영어</th>
+          <th>과학</th>
+          <th>충점</th>
+          <th>평균</th>
+        </tr>
+      </table>
+    </div>
+  </body>
+
+  <script>
+    const data = [
+      { name: "윤인성", kor: 87, math: 98, eng: 88, sci: 95 },
+      { name: "연하진", kor: 92, math: 98, eng: 96, sci: 96 },
+      { name: "구지연", kor: 76, math: 96, eng: 94, sci: 90 },
+      { name: "나선주", kor: 98, math: 92, eng: 96, sci: 92 },
+      { name: "윤아린", kor: 95, math: 98, eng: 98, sci: 98 },
+      { name: "윤명월", kor: 64, math: 88, eng: 92, sci: 92 },
+    ];
+
+    function init() {
+      data.forEach((data) => {
+        addScore(data);
+      });
+    }
+
+    function addScore({ name, kor, math, eng, sci }) {
+      const total = kor + math + eng + sci;
+      const avg = Math.floor((total / 4) * 10) / 10;
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${name}</td>
+        <td>${kor}</td>
+        <td>${math}</td>
+        <td>${eng}</td>
+        <td>${sci}</td>
+        <td>${total}</td>
+        <td>${avg}</td>`;
+      document.getElementById("table").appendChild(tr);
+    }
+  </script>
+</html>

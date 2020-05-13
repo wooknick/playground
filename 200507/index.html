@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .wrapper {
+        width: 220px;
+        height: 50px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .btn {
+        width: 40px;
+        height: 20px;
+      }
+      .target {
+        width: 40px;
+        height: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <button class="btn" id="1">1</button>
+      <button class="btn" id="2">2</button>
+      <button class="btn" id="3">3</button>
+      <button class="btn" id="4">4</button>
+      <button class="btn" id="5">5</button>
+      <div class="target" id="1"></div>
+      <div class="target" id="2"></div>
+      <div class="target" id="3"></div>
+      <div class="target" id="4"></div>
+      <div class="target" id="5"></div>
+    </div>
+  </body>
+  <script>
+    var btns = document.getElementsByClassName("btn");
+    var targets = document.getElementsByClassName("target");
+
+    for (btn of btns) {
+      btn.addEventListener("click", function (event) {
+        var id = event.target.id;
+        for (target of targets) {
+          if (target.id === id) {
+            target.innerHTML = "O";
+          } else {
+            target.innerHTML = "";
+          }
+        }
+      });
+    }
+  </script>
+</html>

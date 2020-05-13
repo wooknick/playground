@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>계산기</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        padding-top: 100px;
+        font-size: 20px;
+      }
+      input[type="text"] {
+        font-size: 20px;
+        text-align: right;
+        flex: 1;
+      }
+
+      #wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+      }
+      .line {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 30px;
+      }
+      .line > span {
+        margin-left: 10px;
+      }
+      .rightLine {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        height: 30px;
+      }
+      .mini {
+        font-size: 13px;
+      }
+      hr {
+        width: 100%;
+      }
+      .hide {
+        visibility: hidden;
+      }
+      .bold {
+        font-size: 22px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div class="line">
+        <input
+          type="text"
+          name="input"
+          id="input"
+          oninput="handleChange(event)"
+        /><span>원</span>
+      </div>
+      <div class="rightLine">
+        <span>- 10%</span>
+      </div>
+      <hr />
+      <div class="line">
+        <span id="a" class="bold">원</span>
+      </div>
+      <div class="rightLine mini">
+        (소숫점 이하 버림)
+        <input
+          type="checkbox"
+          name="round"
+          id="round"
+          checked
+          onchange="handleChange(event)"
+        />
+      </div>
+      <br />
+      <div class="line hide bonus">
+        <span id="b"></span>
+      </div>
+      <hr class="hide bonus" />
+      <div class="line hide bonus">
+        <span id="c"></span>
+      </div>
+    </div>
+  </body>
+  <script>
+    var numberWithCommas = (x) => {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+
+    var numberWithoutCommas = (x) => {
+      return x.toString().replace(/,/g, "");
+    };
+
+    var handleChange = (event) => {
+      var input = document.getElementById("input").value;
+      input = numberWithoutCommas(input);
+      document.getElementById("input").value = numberWithCommas(input);
+      input = input && !isNaN(input) ? parseInt(input) : 0;
+
+      var shouldCeil = document.getElementById("round").checked;
+      var afterInput = shouldCeil ? Math.floor(input * 0.9) : input * 0.9;
+      document.getElementById("a").innerText = `= ${numberWithCommas(
+        afterInput
+      )} 원`;
+
+      var shouldAdd = afterInput < 30000 && afterInput !== 0;
+      var addedValue = shouldAdd ? afterInput + 3000 : afterInput;
+
+      if (shouldAdd) {
+        for (x of document.getElementsByClassName("bonus")) {
+          x.classList.remove("hide");
+        }
+        document.getElementById("a").classList.remove("bold");
+        document.getElementById("c").classList.add("bold");
+      } else {
+        for (x of document.getElementsByClassName("bonus")) {
+          x.classList.add("hide");
+        }
+        document.getElementById("a").classList.add("bold");
+        document.getElementById("c").classList.remove("bold");
+      }
+      document.getElementById("b").innerText = `+ 3,000 원`;
+      document.getElementById("c").innerText = `= ${numberWithCommas(
+        addedValue
+      )} 원`;
+    };
+  </script>
+</html>

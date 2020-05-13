@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      var users = { std01: "1111", std02: "2222", std03: "3333" };
+      var userId = prompt("아이디를 입력해주세요.");
+      var userPw = prompt("비밀번호를 입력해주세요.");
+
+      if (users[userId] === userPw) {
+        alert("로그인에 성공했습니다.");
+      } else {
+        alert("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.");
+      }
+    </script>
+  </body>
+</html>

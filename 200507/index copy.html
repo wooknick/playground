@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .btn {
+        width: 40px;
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn" id="1">1</button>
+    <button class="btn" id="2">2</button>
+    <button class="btn" id="3">3</button>
+    <button class="btn" id="4">4</button>
+    <button class="btn" id="5">5</button>
+    <div class="circle" style="width: 215px; border: 1px solid black;">
+      <span class="nname" style="position: relative; left: 5%;">O</span>
+    </div>
+  </body>
+  <script>
+    var btns = document.getElementsByClassName("btn");
+    var targets = document.getElementsByClassName("target");
+
+    for (btn of btns) {
+      btn.addEventListener("click", function (event) {
+        var id = event.target.id;
+        for (target of targets) {
+          if (target.id === id) {
+            target.innerHTML = "O";
+          } else {
+            target.innerHTML = "";
+          }
+        }
+      });
+    }
+  </script>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        오늘은 무슨 요일?
+        <br />
+        <form id="myForm">
+            <input type="radio" name="day" value="mon" />월요일
+            <input type="radio" name="day" value="tue" />화요일
+            <input type="radio" name="day" value="wed" />수요일
+            <input type="radio" name="day" value="thu" />목요일
+            <input type="radio" name="day" value="fri" />금요일
+            <input type="radio" name="day" value="sat" />토요일
+            <input type="radio" name="day" value="sun" />일요일
+        </form>
+        <script>
+            var savedDay = localStorage.getItem("selectedDay"); // 로컬스토리지에서 저장된 값을 불러옴
+            if (savedDay) {
+                // 만약 저장된 값이 있다면,
+                var inputs = document.getElementsByTagName("input");
+                for (input of inputs) {
+                    // 모든 input 중에서
+                    if (input.value === savedDay) {
+                        // value가 저장되어 있는 값과 같은 경우를
+                        input.checked = true; // 체크함
+                    }
+                }
+            }
+            var form = document.getElementById("myForm"); // 모든 input이 들어있는 form을 찾아둠
+            var save = e => {
+                if (e.target.nodeName === "INPUT") {
+                    // 클릭된 요소가 input이라면,
+                    localStorage.setItem("selectedDay", e.target.value); // 그 input의 value를 로컬스토리지에 저장함
+                }
+            };
+            form.addEventListener("click", save); // form이 클릭될 때마다, save 함수를 실행
+        </script>
+    </body>
+</html>

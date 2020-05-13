@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button onclick="(()=>{window.location.href = `https://naver.com`})()">
+      페이지이동
+    </button>
+  </body>
+  <script>
+    var count = 1;
+    var sum = 0;
+    var input = "";
+    while (true) {
+      input = prompt(`${count}번째 입력`);
+      if (input === "End") {
+        console.log(`입력값 합은 ${sum} 입니다.`);
+        break;
+      } else {
+        sum += parseInt(input);
+        count++;
+      }
+    }
+  </script>
+</html>

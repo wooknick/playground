@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+</head>
+<div class="Allbox">
+        <div class="box">
+           <button>BUTTON</button>
+           <span class="view" id="btn1">조회수<span></span></span>
+        </div>
+    
+        <div class="box">
+           <button>BUTTON</button>
+           <span class="view" id="btn2">조회수<span></span></span>
+        </div>
+    
+        <div class="box">
+           <button>BUTTON</button>
+           <span class="view" id="btn3">조회수<span></span></span>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script>
+      $(function(){
+         localStorage.clear();
+          $('button').on('click', function(e){
+             var index = $(this).parent().index();
+             var ncount = $(this).parent().find(".view>span");
+             console.log(index);
+             console.log(ncount);
+             var viewCount = localStorage.getItem('viewcount');
+             viewCount = viewCount? viewCount : 0;
+             localStorage.setItem('viewcount', ++viewCount);
+             $(ncount).html(viewCount);
+          });  
+      });
+      
+    </script>
+
+</body>
+</html>

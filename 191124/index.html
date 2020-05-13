@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>9-14</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript">
+      /* 라디오버튼 클릭 시 함수 실행 */
+      var sum;
+      function doCount() {
+        var radios = document.getElementsByTagName("input"); //라디오 버튼들
+        var sum = 0; //합산결과
+
+        /* 라디오버튼 수만큼 반복문 실행 */
+        for (var i = 0; i < radios.length; i++) {
+          /* 선택되어있는 라디오 버튼의 값을 sum에 적용 */
+          if (radios[i].checked) {
+            sum += parseInt(radios[i].value);
+          }
+        }
+
+        document.getElementById("sum").innerText = sum; //id가 sum인 tag(span)에 결과 설정
+      }
+      function showPopup() {
+        var sumpopup = sum;
+        if (sumpopup <= 5) {
+          window.open(
+            "popup_1.html",
+            "a",
+            "width=400, height=300, left=100, top=50"
+          );
+          if (sumpopup >= 5) {
+            window.open(
+              "popup_2.html",
+              "b",
+              "width=400, height=300, left=100, top=50"
+            );
+          }
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <form>
+      <select id="sel" onchange="show();">
+        <option value="apple.jpg">사과</option>
+        <option value="banana.jpg">바나나</option>
+        <option value="galaxy-note10.jpg">갤럭시노트10</option>
+      </select>
+      <span id="s">이미지 크기</span>
+    </form>
+  </body>
+</html>

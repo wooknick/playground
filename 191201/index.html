@@ -1,0 +1,58 @@
+<html>
+
+<head>
+    <script language='javascript'>
+    function searchText() {
+    
+    var upquery = document.getElementById('searchText').value;
+    var word = document.getElementById('searchText').value;
+    if(document.getElementById('btn').onclick) {
+    location.href='' + word;
+    }
+    }
+    </script>
+</head>
+
+<body>
+    <header>
+    <a id="logo" href="main.html" style="text-decoration:none;"><h2> berry music </h2></a>
+    <span id="login" > <!--float:글위치-->
+    <a href="login.html" style="text-decoration:none;"> 로그인 </a> 
+    <a href="signup.html" style="text-decoration:none;">회원가입</a>
+    </span>
+    <br><br><br>
+    <div id="검색창">
+    <input type='text' size='26' id='searchText'>
+    <input type='button' id="btn" value='검색' onclick='searchText();'>
+    </div>
+    <br><br><br>
+    </header>
+    <nav id="Menu1">
+    <ul>
+    <li class="Menu1Li">
+                    <a class="menuLink" href="">국내음악</a>
+                    <ul class="submenu">
+                        <li><a href="https://www.melon.com/" class="submenuLink longLink" target="music">국내가요</a></li>
+                        <li><a href="file:///D:/bellshared/korean/rap/playlist.html" class="submenuLink longLink" target="music">힙합/랩</a></li>
+                        <li><a href="file:///D:/bellshared/korean/trot/playlist.html" class="submenuLink longLink" target="music">트로트</a></li>
+                    </ul>
+                </li>
+    <li>|</li>
+                <li class="Menu1Li">
+                    <a class="menuLink" href="">해외음악</a>
+                    <ul class="submenu">
+                        <li><a href="file:///D:/bellshared/pop/popsong/playlist.html" class="submenuLink" target="music">팝송</a></li>
+                        <li><a href="file:///D:/bellshared/pop/hip/playlist.html" class="submenuLink" target="music">해외 힙합/랩</a></li>
+                        <li><a href="file:///D:/bellshared/pop/metal/playlist.html" class="submenuLink" target="music">해외 록/메탈</a></li>
+                    </ul>
+                </li>
+    </nav>
+    <hr/>
+    <div id="scroll">
+    <article class="main">
+    <iframe name="music" src="http://google.com" width="1100px" height="800px"></iframe>
+    </article>
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="test.css" />
+    <link rel="stylesheet" href="kia_clone/css/reset.css" />
+    <title>test</title>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+    ></script>
+    <script>
+      function plusSlides(n) {
+        showSlide((slideIndex += n));
+      }
+      function currentSlide(n) {
+        showSlide((slideIndex = n));
+      }
+      function showSlide(slideIndex) {
+        var slides = $(".slide");
+        var dots = $(".dot");
+        for (var i = 0; i <= slides.length(); i++) {
+          if (slideIndex >= slides.length()) {
+            slideIndex = 0;
+          }
+          if (slideIndex < 0) {
+            slideIndex = 0;
+          }
+          slides[i].css("display", "none");
+          dots[i].removeClass("active");
+        }
+        slides[slideIndex].css("display", "block");
+        dots[slideIndex].addClass("active");
+      }
+      $(function() {
+        var slideIndex = 0;
+        showSlide(slideIndex);
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="slide fade">
+        <div class="background">
+          <video
+            src="https://www.kia.com/content/dam/kwcms/kr/ko/files/video/4thgensorento_200219.mp4"
+            autoplay
+            muted
+            loop
+          ></video>
+        </div>
+      </div>
+      <div class="text">
+        쏘렌토
+      </div>
+      <div class="slide fade">
+        <div class="background">
+          <img
+            src="https://www.kia.com/content/dam/kwcms/kr/ko/images/main/KV/20200107/01_bongo3-ev_pu.jpg"
+          />
+        </div>
+        <div class="text">
+          봉고
+        </div>
+      </div>
+    </div>
+    <div class="button">
+      <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+      <a class="next" onclick="plusSlides(1)">&#10095;</a>
+    </div>
+    <div style="text-align:center;">
+      <span class="dot" onclick="currentSlide(0)"></span>
+      <span class="dot" onclick="currentSlide(1)"></span>
+    </div>
+  </body>
+</html>

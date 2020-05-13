@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <script>
+      var fruits = new Array(
+        { name: "사과", price: "21000", amount: "10" },
+        { name: "참외", price: "18000", amount: "20" },
+        { name: "귤", price: "15000", amount: "30" }
+      );
+
+      var printInfo = function(fruits) {
+        console.log(`이름 | 가격 | 개수`);
+        fruits.map(fruit =>
+          console.log(`${fruit.name} | ${fruit.price} | ${fruit.amount}`)
+        );
+      };
+
+      printInfo(fruits);
+    </script>
+  </body>
+</html>

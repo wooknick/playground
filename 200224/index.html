@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+      }
+      .title {
+        margin-bottom: 3px;
+      }
+      .title > span::after {
+        content: " *";
+      }
+
+      .wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-width: 500px;
+        width: 60vw;
+        padding-top: 30px;
+      }
+
+      section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 80%;
+        margin-bottom: 15px;
+      }
+
+      .text {
+        font-size: 14px;
+      }
+      #username {
+        height: 30px;
+      }
+
+      .submit {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .submit_button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90px;
+        height: 30px;
+        background-color: black;
+      }
+
+      .submit_button:hover {
+        cursor: pointer;
+      }
+
+      .submit_button .text {
+        color: white;
+        font-size: 10px;
+      }
+
+      .thank_message {
+        margin-top: 3px;
+      }
+      .thank_message .text {
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <section class="name">
+        <div class="title">
+          <span class="text">이름</span>
+        </div>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="이름을 적어주세요"
+        />
+      </section>
+      <section class="help">
+        <div class="title">
+          <span class="text">무엇을 도와드릴까요?</span>
+        </div>
+        <div class="selection">
+          <input type="checkbox" name="usercheck" id="checkbox1" value="가" />
+          가 <br />
+          <input type="checkbox" name="usercheck" id="checkbox2" value="나" />
+          나 <br />
+          <input type="checkbox" name="usercheck" id="checkbox3" value="다" />
+          다 <br />
+          <input type="checkbox" name="usercheck" id="checkbox4" value="라" />
+          라
+        </div>
+      </section>
+      <section class="submit">
+        <div class="submit_button">
+          <span class="text">제출</span>
+        </div>
+        <div class="thank_message">
+          <span class="text">제출해주셔서 감사합니다.</span>
+        </div>
+      </section>
+    </div>
+  </body>
+  <script>
+    const submitFunc = () => {
+      const name = document.getElementById("username").value;
+      const checkbox = document.getElementsByName("usercheck");
+      const checkedItem = [];
+      for (const item of checkbox) {
+        if (item.checked) {
+          item;
+          checkedItem.push(item.value);
+        }
+      }
+      const retObj = {
+        name,
+        checkedItem
+      };
+      console.log(retObj);
+      alert(JSON.stringify(retObj));
+    };
+
+    document
+      .getElementsByClassName("submit_button")[0]
+      .addEventListener("click", submitFunc);
+  </script>
+</html>

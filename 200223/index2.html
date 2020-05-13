@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .wrapper {
+        width: 100px;
+        height: 100%;
+        border: black solid 1px;
+        margin-bottom: 2px;
+      }
+      .title {
+        text-align: center;
+        height: 20px;
+      }
+
+      .title:hover {
+        cursor: pointer;
+      }
+
+      .content {
+        height: 40px;
+        text-align: center;
+        background-color: beige;
+        padding-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="title">제목 1</div>
+      <div class="content">내용 1</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 2</div>
+      <div class="content">내용 2</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 3</div>
+      <div class="content">내용 3</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 4</div>
+      <div class="content">내용 4</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 5</div>
+      <div class="content">내용 5</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 6</div>
+      <div class="content">내용 6</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 7</div>
+      <div class="content">내용 7</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 8</div>
+      <div class="content">내용 8</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 9</div>
+      <div class="content">내용 9</div>
+    </div>
+    <div class="wrapper">
+      <div class="title">제목 10</div>
+      <div class="content">내용 10</div>
+    </div>
+  </body>
+  <script>
+    console.log(navigator.userAgent);
+    var initSpread = "block"; // 내용을 펼칠것인지 접을것인지에 대한 초기값 설정
+    var allContents = document.getElementsByClassName("content"); // 모든 content를 찾아둠
+    for (var content of allContents) {
+      // 모든 content 부분 display에 초기 설정값을 일괄 적용
+      content.style.display = initSpread;
+    }
+
+    var toggleSpread = event => {
+      // 열고 접는 함수
+      var content = event.target.nextElementSibling;
+      content.style.display =
+        content.style.display === "none" ? "block" : "none";
+    };
+
+    var allTitles = document.getElementsByClassName("title"); // 모든 title를 찾아둠
+    for (var title of allTitles) {
+      // 모든 title을 클릭하면 열고 접는 함수가 실행되도록 이벤트리스너 등록
+      title.addEventListener("click", toggleSpread);
+    }
+  </script>
+</html>

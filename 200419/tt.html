@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+      var students = [];
+      students.push({ 이름: "윤인성", 국어: 80, 수학: 70, 영어: 50, 과학: 11 });
+      students.push({ 이름: "연하진", 국어: 60, 수학: 66, 영어: 60, 과학: 22 });
+      students.push({ 이름: "구지연", 국어: 50, 수학: 77, 영어: 70, 과학: 90 });
+      students.push({ 이름: "나선주", 국어: 40, 수학: 44, 영어: 30, 과학: 33 });
+      students.push({ 이름: "윤아린", 국어: 50, 수학: 55, 영어: 40, 과학: 44 });
+      students.push({ 이름: "윤명월", 국어: 60, 수학: 65, 영어: 50, 과학: 67 });
+      students.push({ 이름: "김미화", 국어: 70, 수학: 34, 영어: 70, 과학: 45 });
+      students.push({ 이름: "김연화", 국어: 80, 수학: 78, 영어: 60, 과학: 77 });
+      students.push({ 이름: "박아현", 국어: 90, 수학: 34, 영어: 40, 과학: 88 });
+      students.push({ 이름: "서준서", 국어: 80, 수학: 21, 영어: 70, 과학: 70 });
+
+      for (var i in students) {
+        students[i].getSum = function () {
+          return this.국어 + this.수학 + this.영어 + this.과학;
+        };
+
+        students[i].getAverage = function () {
+          return this.getSum() / 4;
+        };
+      }
+
+      var output =
+        "<tr><td>이름</td><td>국어</td><td>수학</td><td>영어</td><td>과학</td><td>총점</td><td>평균</td></tr>";
+      for (var i in students) {
+        with (students[i]) {
+          output +=
+            "<tr>" +
+            "<td>" +
+            이름 +
+            "</td>" +
+            "<td>" +
+            국어 +
+            "</td>" +
+            "<td>" +
+            수학 +
+            "</td>" +
+            "<td>" +
+            영어 +
+            "</td>" +
+            "<td>" +
+            과학 +
+            "</td>" +
+            "<td>" +
+            getSum() +
+            "</td>" +
+            "<td>" +
+            getAverage() +
+            "</tr>";
+        }
+      }
+      document.write("<table>" + output + "</table>");
+    </script>
+  </head>
+  <body></body>
+</html>

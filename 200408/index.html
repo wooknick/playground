@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <title>[##_page_title_##] :: [##_title_##]</title>
+    <meta name="title" content="[##_page_title_##] :: [##_title_##]" />
+    <meta name="description" content="[##_desc_##]" />
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="[##_title_##]"
+      href="[##_rss_url_##]"
+    />
+    <link rel="shortcut icon" href="[##_blog_link_##]favicon.ico" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./images/style_webicon.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+    <script src="./images/common.js"></script>
+  </head>
+  <body id="[##_body_id_##]" class="[##_var_penelopeColorSet_##]">
+    <s_t3>
+      <!-- warp / 테마 변경시 thema_xxx 변경 -->
+      <div id="wrap" class="[##_var_penelopeColorSet_##]">
+        <!-- area_menu -->
+        <div class="area_menu">
+          <nav class="menu_navigation">
+            [##_blog_menu_##] [##_category_list_##]
+          </nav>
+          <div class="m_sidebar pc_">
+            <div class="related_posts_mobile">
+              <!-- related_type_view -->
+              <div
+                class="related_type related_type_view"
+                style="display: block;"
+              >
+                <ul class="list_related"></ul>
+              </div>
+            </div>
+            <!-- // related_type_view -->
+            <!-- about_me -->
+            <div class="about_me_mobile">
+              <div class="box_sidebar about_me">
+                <h3 class="title_sidebar">ABOUT ME</h3>
+                <p class="text_about">-</p>
+              </div>
+            </div>
+          </div>
+          <ul class="list_sns">
+            <s_if_var_snsFacebook>
+              <li>
+                <a
+                  href="[##_var_snsFacebook_##]"
+                  class="link_sns link_fb"
+                  target="_blank"
+                  ><span class="">페이스북</span></a
+                >
+              </li>
+            </s_if_var_snsFacebook>
+            <s_if_var_snsTwitter>
+              <li>
+                <a
+                  href="[##_var_snsTwitter_##]"
+                  class="link_sns link_twitter"
+                  target="_blank"
+                  ><span class="">트위터</span></a
+                >
+              </li>
+            </s_if_var_snsTwitter>
+            <s_if_var_snsInstagram>
+              <li>
+                <a
+                  href="[##_var_snsInstagram_##]"
+                  class="link_sns link_insta"
+                  target="_blank"
+                  ><span class="">인스타그램</span></a
+                >
+              </li>
+            </s_if_var_snsInstagram>
+          </ul>
+          <div class="box_visit">
+            <dl class="data_today">
+              <dt class="title_visit">Today</dt>
+              <dd class="item_visit">-</dd>
+            </dl>
+            <dl class="data_yesterday">
+              <dt class="title_visit">Yesterday</dt>
+              <dd class="item_visit">-</dd>
+            </dl>
+            <dl class="data_total">
+              <dt class="title_visit">Total</dt>
+              <dd class="item_visit">-</dd>
+            </dl>
+          </div>
+        </div>
+        <!-- // area_menu -->
+        <!-- container  / header에 btn_search 클릭하면 class에 search_on 추가(모바일에서만 작동) -->
+        <div id="container">
+          <header id="header">
+            <div class="inner_header">
+              <h1 class="logo">
+                <a
+                  href="[##_blog_link_##]"
+                  title="[##_title_##]"
+                  class="link_logo"
+                >
+                  <s_if_var_logoImage
+                    >style="background-image:url('[##_var_logoImage_##]');"</s_if_var_logoImage
+                  >>
+                  <span class="">[##_title_##]</span>
+                  <s_not_var_logoImage>
+                    <span class="title_text">[##_title_##]</span>
+                  </s_not_var_logoImage>
+                </a>
+              </h1>
+              <button type="button" class="btn_menu">
+                <span class="icon-Menu"></span><span class="icon-Close"></span
+                ><span class="">메뉴</span>
+              </button>
+              <button class="btn_search">
+                <span class="icon-Search"></span><span class="">검색</span>
+              </button>
+              <!-- btn_search 클릭하면 나옴 /-->
+              <div class="area_search thema_apply" style="display: none;">
+                <form action="" method="get">
+                  <legend><span class="">컨텐츠 검색</span></legend>
+                  <s_search>
+                    <input
+                      type="text"
+                      name="[##_search_name_##]"
+                      title="Search"
+                      placeholder="Search"
+                      value="[##_search_text_##]"
+                      class="inp_search"
+                      onkeypress="if (event.keyCode == 13) { [##_search_onclick_submit_##] }"
+                    />
+                  </s_search>
+                  <button
+                    type="button"
+                    title="검색어 삭제"
+                    class="btn_search_del"
+                  ></button>
+                </form>
+              </div>
+            </div>
+          </header>
+          <main id="main">
+            <!-- inner_index -->
+            <div class="inner_index">
+              <s_cover_group> </s_cover_group>
+            </div>
+          </main>
+        </div></div
+    ></s_t3>
+  </body>
+</html>

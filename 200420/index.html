@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lease</title>
+    <script>
+      var keyinput = "";
+      var debounceCheck;
+
+      var shortCutRegister = {
+        "11": "description",
+        "12": "msrp",
+        "13": "invoice",
+        "14": "money",
+        "15": "residual",
+        "16": "month",
+        "17": "drive",
+        "18": "leasecash",
+        "19": "registration",
+        "20": "bank",
+        "21": "sales",
+      };
+
+      function shortCut(event) {
+        if (event.target.nodeName === "BODY") {
+          clearTimeout(debounceCheck);
+          keyinput += event.key;
+          debounceCheck = setTimeout(() => {
+            if (shortCutRegister[keyinput]) {
+              document
+                .querySelector(`input#${shortCutRegister[keyinput]}`)
+                .focus();
+            }
+            keyinput = "";
+          }, 500);
+        }
+      }
+
+      function onKeyDown(event, obj) {
+        if (event.key === "Enter") {
+          table = obj.closest("table");
+          inputs = table.querySelectorAll("input");
+          cal_button = table.parentNode.querySelector("input#cal");
+          inputs.forEach((input, i) => {
+            if (input === obj && inputs[i + 1]) {
+              if (inputs[i + 1].name === "lease_result") {
+                cal(cal_button);
+                obj.blur();
+              } else {
+                inputs[i + 1].focus();
+              }
+            }
+          });
+        } else if (event.key === "Escape") {
+          obj.blur();
+        }
+      }
+
+      function save_data() {
+        var storage = window.localStorage;
+        var forms = document.querySelectorAll(".form-group");
+        var data_all = [];
+        forms.forEach((form) => {
+          var data_form = {};
+          form.querySelectorAll("input[type=text]").forEach((input) => {
+            data_form[input.id] = input.value;
+          });
+          data_all.push(data_form);
+        });
+        storage.setItem("lease_data", JSON.stringify(data_all));
+      }
+
+      function load_data() {
+        var storage = window.localStorage;
+        var lease_data = storage.getItem("lease_data");
+        if (lease_data) {
+          data = JSON.parse(lease_data);
+          for (i = 1; i < data.length; i++) {
+            add();
+          }
+          var forms = document.querySelectorAll(".form-group");
+          forms.forEach((form, i) => {
+            form.querySelectorAll("input[type=text]").forEach((input) => {
+              input.value = data[i][input.id];
+            });
+          });
+        }
+        save_data();
+      }
+
+      function get_block(id) {
+        var base = document.getElementById(id);
+        return base;
+      }
+
+      function add() {
+        var base = get_block("base").cloneNode(true);
+        base.removeAttribute("id");
+        base.querySelectorAll("input[type=text]").forEach((input) => {
+          input.value = "";
+        });
+        document.body.appendChild(base);
+        save_data();
+      }
+
+      function remove(obj) {
+        var target = obj.parentNode;
+        if (target.id !== "base") {
+          document.body.removeChild(target);
+        }
+        save_data();
+      }
+
+      /* LEASE CALCULATOR */
+      function cal(obj) {
+        var reg,
+          lease_residual,
+          lease_residual1,
+          afterlease2,
+          lease_up,
+          lease_down,
+          lease,
+          lease_tax,
+          lease1,
+          tdo,
+          cap_reduction,
+          tdoA;
+
+        var form = obj.parentNode.firstElementChild;
+        var msrp = form.querySelector("input#msrp");
+        var invoice = form.querySelector("input#invoice");
+        var money = form.querySelector("input#money");
+        var residual = form.querySelector("input#residual");
+        var month = form.querySelector("input#month");
+        var drive = form.querySelector("input#drive");
+        var leasecash = form.querySelector("input#leasecash");
+        var registration = form.querySelector("input#registration");
+        var bank = form.querySelector("input#bank");
+        var sales = form.querySelector("input#sales");
+        var lease_result = form.querySelector("input#lease_result");
+
+        var reg = parseFloat(invoice.value) * 0.006496 + 110;
+        var l_sales_tax = 1 + parseFloat(sales.value) / 100;
+        var tax_adj = 1 - parseFloat(sales.value) / 100;
+        var tax_adj1 =
+          1 - ((parseFloat(sales.value) / 100) * parseFloat(sales.value)) / 100;
+        var cost =
+          parseFloat(bank.value) + parseFloat(registration.value) + 117.75;
+        var acc_sub1 =
+          cost - parseFloat(drive.value) - parseFloat(leasecash.value);
+        var sell_cost = parseFloat(invoice.value) + acc_sub1;
+        var acc_sub = tax_adj * acc_sub1;
+        var acc = parseFloat(invoice.value) + acc_sub;
+        var mos_mf = parseFloat(month.value) * parseFloat(money.value);
+        var mos_mf1 = mos_mf + 1;
+        var mos_mf2 = mos_mf - 1;
+
+        if (parseFloat(residual.value) < 100) {
+          lease_residual =
+            parseFloat(msrp.value) * (parseFloat(residual.value) / 100);
+          lease_residual1 = parseFloat(residual.value) / 100;
+          afterlease2 =
+            (lease_residual + 80) * (parseFloat(sales.value) / 100) +
+            80 +
+            lease_residual;
+        } else {
+          lease_residual = parseFloat(residual.value);
+          lease_residual1 =
+            (parseFloat(money.value) / parseFloat(msrp.value)) * 100;
+          afterlease2 =
+            (lease_residual + 80) * (parseFloat(sales.value) / 100) +
+            80 +
+            lease_residual;
+        }
+
+        var drive_lease = parseFloat(drive.value) + parseFloat(leasecash.value);
+        var apr = parseFloat(money.value) * 2400;
+
+        if (drive_lease <= cost) {
+          lease_up = sell_cost * mos_mf1 + lease_residual * mos_mf2;
+          lease_down = parseFloat(month.value) - l_sales_tax * mos_mf1;
+          lease = lease_up / lease_down;
+          lease_tax = lease * (l_sales_tax - 1);
+          lease1 = lease * l_sales_tax;
+        } else {
+          lease_up = acc * mos_mf1 + lease_residual * mos_mf2;
+          lease_down = parseFloat(month.value) - tax_adj1 * mos_mf1;
+          lease = lease_up / lease_down;
+          lease_tax = lease * (l_sales_tax - 1);
+          lease1 = lease * l_sales_tax;
+        }
+
+        lease_result.value = `$ ${lease.toFixed(
+          2
+        )} + TAX ($ ${lease_tax.toFixed(2)}) = $ ${lease1.toFixed(2)}`;
+        save_data();
+      }
+
+      /* PURCHASE CALCULATOR
+      	            var otd1, otd2, otd, otd_rebate, otd_rebate1, purchase_interest, purchase_up1, purchase_up, purchase_down1, purchase_down2, purchase_down, purchase;
+
+      	            var sales_tax = 1 + (parseFloat(frm.elements[14].value) / 100);
+      				var reg1 = parseFloat(frm.elements[10].value) * 0.006496 + 110;
+
+      				if (parseFloat(frm.elements[13].value) != 0 ) {
+      				sales_tax = 1 + (parseFloat(frm.elements[14].value) / 100);
+      				otd1 = (parseFloat(frm.elements[10].value) + parseFloat(frm.elements[17].value) + 80) * sales_tax;
+      				otd2 = otd1 + parseFloat(frm.elements[16].value) + 37.75;
+      				otd = otd1 + parseFloat(frm.elements[16].value) - parseFloat(frm.elements[11].value)- parseFloat(frm.elements[15].value) + 37.75;
+      				otd_rebate = otd1 + parseFloat(frm.elements[16].value) - parseFloat(frm.elements[15].value) + 37.75;
+      				otd_rebate1 = otd1 + parseFloat(frm.elements[16].value) - parseFloat(frm.elements[15].value) + 37.75 - parseFloat(frm.elements[11].value);
+      				purchase_interest = parseFloat(frm.elements[13].value)/100;
+      				purchase_up1 = purchase_interest / 12;
+      				purchase_up = otd * purchase_up1;
+
+
+      				purchase_down1 = 1 + purchase_up1;
+      				purchase_down2 = Math.pow (purchase_down1, - parseFloat(frm.elements[12].value));
+      				purchase_down = 1-purchase_down2;
+      			    purchase = purchase_up / purchase_down;
+
+      				}
+      				else {
+      				otd1 = (parseFloat(frm.elements[10].value) + parseFloat(frm.elements[17].value) + 80) * sales_tax;
+      				otd2 = otd1 + parseFloat(frm.elements[16].value) + 37.75;
+      				otd = otd1 + parseFloat(frm.elements[16].value) - parseFloat(frm.elements[11].value)- parseFloat(frm.elements[15].value) + 37.75;
+      				otd_rebate = otd1 + parseFloat(frm.elements[16].value) - parseFloat(frm.elements[15].value) + 37.75;
+      				otd_rebate1 = otd1 + parseFloat(frm.elements[16].value) - parseFloat(frm.elements[15].value) + 37.75 - parseFloat(frm.elements[11].value);
+      				purchase = otd / parseFloat(frm.elements[12].value);
+      				reg1 = parseFloat(frm.elements[10].value) * 0.006496 + 110;
+      				interest_sum = 0;
+      				}
+
+      				purchase_result.value = purchase;
+
+      	          save_data();
+            }
+
+      */
+    </script>
+  </head>
+  <body onload="load_data()" onkeypress="shortCut(event)">
+    <table width="700" border="0" bordercolor="#dbd7a2">
+      <tr>
+        <td align="left">
+          <a href="http://www.gocarinca.com" target="_blank">
+            <img src="http://www.carinca.com/mw_logo.gif" />
+          </a>
+        </td>
+        <td align="left">
+          <a
+            href="https://www.cdtfa.ca.gov/taxes-and-fees/rates.aspx"
+            target="_blank"
+          >
+            <img src="http://www.carinca.com/sales_tax.gif" />
+          </a>
+        </td>
+        <td align="left">
+          <a href="http://www.carinca.com/cic.php" target="_blank">
+            <img src="http://www.carinca.com/newwindow.gif" />
+          </a>
+        </td>
+        <td align="left">
+          <a href="http://www.gocarinca.com/admin" target="_blank">STOCK</a>
+        </td>
+      </tr>
+    </table>
+    <div id="base" class="form-group" style="margin-bottom: 15px;">
+      <table
+        width="700"
+        border="1"
+        bordercolor="#a2c8db"
+        cellpadding="4"
+        cellspacing="0"
+        style="border-collapse: collapse;"
+      >
+        <col width="12.50%" style="" bgcolor="#e9ffe7" align="center" />
+        <col width="12.50%" />
+        <col width="12.50%" />
+        <col width="12.50%" />
+        <col width="12.50%" style="" bgcolor="#e9ffe7" align="center" />
+        <col width="12.50%" />
+        <col width="12.50%" />
+        <col width="12.50%" />
+
+        <tr>
+          <td colspan="2" style="">DESCRIPTION</td>
+          <td colspan="6">
+            <input
+              type="text"
+              id="description"
+              name="description"
+              size="70"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" style="">MSRP</td>
+          <td colspan="6">
+            <input
+              type="text"
+              id="msrp"
+              name="msrp"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">INVOICE OR CAP</td>
+          <td colspan="6">
+            <input
+              type="text"
+              id="invoice"
+              name="invoice"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">MONEY FACTOR</td>
+          <td colspan="2">
+            <input
+              type="text"
+              id="money"
+              name="money"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+          <td colspan="2">RESIDUAL</td>
+          <td colspan="2">
+            <input
+              type="text"
+              id="residual"
+              name="residual"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">MONTH</td>
+          <td colspan="2">
+            <input
+              type="text"
+              id="month"
+              name="month"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+          <td colspan="2">DRIVE OFF</td>
+          <td colspan="2">
+            <input
+              type="text"
+              id="drive"
+              name="drive"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">LEASE CASH</td>
+          <td colspan="2">
+            <input
+              type="text"
+              id="leasecash"
+              name="leasecash"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+          <td colspan="2">REGISTRATION FEE</td>
+          <td colspan="2">
+            <input
+              type="text"
+              id="registration"
+              name="registration"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2">BANK FEE</td>
+          <td colspan="2">
+            <input
+              type="text"
+              id="bank"
+              name="bank"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+          <td colspan="2">SALES TAX</td>
+          <td colspan="2">
+            <input
+              type="text"
+              id="sales"
+              name="sales"
+              size="8"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="">LEASE_PAYMENT</td>
+          <td colspan="6">
+            <input
+              type="text"
+              id="lease_result"
+              name="lease_result"
+              size="70"
+              class="form-control"
+              oninput="save_data()"
+              onkeydown="onKeyDown(event, this)"
+              disabled="disabled"
+            />
+          </td>
+        </tr>
+      </table>
+
+      <input type="button" value="addLease" onclick="add()" />
+      <input type="button" value="addPurchase" onclick="addPurchase()" />
+
+      <input type="button" value="del" onclick="remove(this)" />
+      <input type="button" id="cal" value="leaseresult" onclick="cal(this)" />
+      <input type="button" value="purchaseresult" onclick="pcal(this)" />
+    </div>
+  </body>
+</html>

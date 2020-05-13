@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <iframe
+      width="300px"
+      height="125px"
+      src="https://www.youtube.com/embed/uz3FpEI3tnI?autoplay=1&amp;playlist=uz3FpEI3tnI&amp;loop=1&amp;start=5&amp;wmode=opaque"
+      frameborder="0"
+      scrolling="no"
+      allowfullscreen="allowfullscreen"
+    ></iframe>
+    <div id="target"></div>
+  </body>
+  <script>
+    fetch("http://api.vkr.kr/kr_corona")
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(myJson) {
+        const { lastBuildDate, Confirmator, Cured, Dead, Inspection } = myJson;
+        const text = `최종수정일 : ${lastBuildDate}, 확진자 : ${Confirmator}, 완치자 : ${Cured}, 사망자 : ${Dead}, 의심환자 : ${Inspection}`;
+        document.getElementById("target").innerHTML = text;
+      });
+  </script>
+</html>
