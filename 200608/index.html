@@ -1,11 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <style>
+      #counter {
+        position: fixed;
+        z-index: 10;
+        top: 20px;
+        left: 20px;
+        width: 100px;
+        height: 30px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
   </head>
   <body>
-    <div>hello this is original</div>
+    <div id="counter">0</div>
   </body>
+  <script>
+    setInterval(() => {
+      document.getElementById("counter").innerHTML =
+        Number(document.getElementById("counter").innerHTML) + 1;
+    }, 1000);
+  </script>
 </html>

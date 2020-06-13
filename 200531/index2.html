@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>학생 성적</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      const targetString = "ABCDEFG";
+      const searchStrings = ["A", "D", "FE", "G"];
+
+      const findStrings = searchStrings.filter((s) => {
+        if (targetString.indexOf(s) != -1) {
+          return s;
+        }
+      });
+
+      console.log(findStrings);
+    </script>
+  </body>
+</html>
