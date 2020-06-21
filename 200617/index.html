@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <form>
+      <h3>로컬 스토리지에 ID/PW 저장하기</h3>
+      <hr />
+      아이디:
+      <input type="text" id="id" required />
+      패스워드:
+      <input type="text" id="pass" />
+      <br />
+      <button id="login" onclick="login()" disabled>로그인하기</button>
+      <button id="logout" onclick="logout()">로그아웃</button>
+    </form>
+    <div id="info">결과출력</div>
+  </body>
+  <script>
+    const login = () => {
+      const id = document.querySelector("#id").value;
+      const password = document.querySelector("#pass").value;
+      const loginInfo = localStorage.getItem(id);
+      let message = "";
+      if (loginInfo) {
+        if (loginInfo === password) {
+          message = `${id} 님이 로그인 하였습니다.`;
+        } else {
+          message = "패스워드가 틀렸습니다.";
+        }
+      } else {
+        localStorage.setItem(id, password);
+        message = `${id} 님이 로그인 하였습니다.`;
+      }
+      document.querySelector("#info").innerHTML = message;
+    };
+
+    const logout = () => {
+      localStorage.clear();
+    };
+  </script>
+</html>

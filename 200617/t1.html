@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <script>
+    check = function (event) {
+      if (
+        form.question1.value === "1" &&
+        form.question2.value === "1" &&
+        form.question3.value === "1" &&
+        form.question4.value === "1"
+      ) {
+        alert("졸업이 가능합니다");
+        return true;
+      } else {
+        alert("조건이 부족합니다");
+        return false;
+      }
+    };
+  </script>
+  <body>
+    <form name="form" onsubmit="return check(event)">
+      1. 전공 총 이수 학점이 130점 이상입니까? <br />
+      <input type="radio" value="1" name="question1" required /> 예
+      <input type="radio" value="2" name="question1" required />
+      아니오<br /><br />
+      2. 필수 교양 모두 이수 및 일반 교양의 최소 학점 이상을 이수했습니까?
+      <br />
+      <input type="radio" value="1" name="question2" required /> 예
+      <input type="radio" value="2" name="question2" required /> 아니오
+      <br /><br />
+      3. 외국어 인증 공인어학 시험 통과 기준 점수 이상이고, 학생 지원처에 접수
+      했습니까?<br />
+      <input type="radio" value="1" name="question3" required /> 예
+      <input type="radio" value="2" name="question3" required /> 아니오
+      <br /><br />
+      4. 졸업 논문을 지도 교수에게 승인받고 학장에게 제출했습니까? (자격증
+      취득으로 졸업 논문 면제일 시 예를 체크해주세요.)<br />
+      <input type="radio" value="1" name="question4" required /> 예
+      <input type="radio" value="2" name="question4" required /> 아니오
+      <br /><br />
+      <button type="submit">졸업 자격 확인</button>
+    </form>
+  </body>
+</html>

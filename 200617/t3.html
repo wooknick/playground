@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <title></title>
+    <style>
+      .filter {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body onload="init()">
+    <form class="filter" onsubmit="return false">
+      <div>
+        <input type="checkbox" name="category" value="복지시설" /> 복지시설
+        <input type="checkbox" name="category" value="공공기관" /> 공공기관 검색
+      </div>
+      <div style="display: inline;">
+        단어:<input name="term" id="term" type="text" value="" />
+      </div>
+      <div style="display: inline;">
+        필드:
+        <select name="field" id="field"></select>
+      </div>
+      <button onclick="search()">찾기</button>
+    </form>
+    <table class="target" border="1"></table>
+  </body>
+</html>
+<script>
+  const wifi = {
+    DESCRIPTION: {
+      PLACE_NAME: "지역명",
+      CATEGORY: "유형",
+      INSTL_X: "설치위치(X좌표)",
+      INSTL_Y: "설치위치(Y좌표)",
+      PLACE_ADDR: "설치주소",
+      GU_NM: "구명",
+      PLACE_ADDR_SUB: "상세설치장소",
+      OBJECTID: "콘텐츠아이디",
+      INSTL_DIV: "설치기관(회사)",
+    },
+    DATA: [
+      {
+        category: "복지시설",
+        gu_nm: "강남구",
+        instl_y: "37.479804",
+        place_name: "아동복지센터",
+        instl_div: "서울시",
+        place_addr: "강남구 광평로34길 124",
+        objectid: "WF120001",
+        instl_x: "127.088505",
+        place_addr_sub: "아동복지센터",
+      },
+      {
+        category: "공공기관",
+        gu_nm: "강남구",
+        instl_y: "37.5082915",
+        place_name: "u-강남 도시관제센터",
+        instl_div: "강남구",
+        place_addr: "서울 강남구 언주로108길 20",
+        objectid: "WF121001",
+        instl_x: "127.0410033",
+        place_addr_sub: "2층",
+      },
+      {
+        category: "공공기관",
+        gu_nm: "강남구",
+        instl_y: "37.4938501",
+        place_name: "강남구의회",
+        instl_div: "강남구",
+        place_addr: "서울 강남구 삼성로 154",
+        objectid: "WF121002",
+        instl_x: "127.0642501",
+        place_addr_sub: "6층",
+      },
+      {
+        category: "공공기관",
+        gu_nm: "강남구",
+        instl_y: "37.5175201",
+        place_name: "강남구청",
+        instl_div: "강남구",
+        place_addr: "서울 강남구 학동로 426",
+        objectid: "WF121010",
+        instl_x: "127.0474601",
+        place_addr_sub: "본관 4층",
+      },
+      {
+        category: "주요거리",
+        gu_nm: "중랑구",
+        instl_y: "37.607799",
+        place_name: "신묵초등학교",
+        instl_div: "서울시",
+        place_addr: "중랑구 묵2동 247-1",
+        objectid: "WF171274",
+        instl_x: "127.07492",
+        place_addr_sub: "C-MK02-0008",
+      },
+      {
+        category: "주요거리",
+        gu_nm: "중랑구",
+        instl_y: "37.605064",
+        place_name: "신내초등학교",
+        instl_div: "서울시",
+        place_addr: "중랑구 신내1동 445-2",
+        objectid: "WF171275",
+        instl_x: "127.099693",
+        place_addr_sub: "C-SN01-0040",
+      },
+      {
+        category: "공공기관",
+        gu_nm: "중랑구",
+        instl_y: "37.6064939",
+        place_name: "중랑구청 앞",
+        instl_div: "서울시",
+        place_addr: "중랑구 신내동 662",
+        objectid: "WF171276",
+        instl_x: "127.0927651",
+        place_addr_sub: "구청 앞 광장",
+      },
+      {
+        category: "주민센터",
+        gu_nm: "중랑구",
+        instl_y: "37.600582",
+        place_name: "마우본동주민센터",
+        instl_div: "서울시",
+        place_addr: "중랑구 망우동 340-18",
+        objectid: "WF171278",
+        instl_x: "127.1013954",
+        place_addr_sub: "5F 로비",
+      },
+      {
+        category: "공원",
+        gu_nm: "중랑구",
+        instl_y: "37.6151938",
+        place_name: "장미테마공원",
+        instl_div: "서울시",
+        place_addr: "중랑구 묵2동 375",
+        objectid: "WF171286",
+        instl_x: "127.0730874",
+        place_addr_sub: "광장옆 가로등",
+      },
+      {
+        category: "공원",
+        gu_nm: "중랑구",
+        instl_y: "37.6148921",
+        place_name: "장미테마공원",
+        instl_div: "서울시",
+        place_addr: "중랑구 묵2동 375",
+        objectid: "WF171287",
+        instl_x: "127.0729229",
+        place_addr_sub: "꽃밭옆 가로등",
+      },
+    ],
+  };
+  let searchField = "";
+  function init() {
+    const table = document.querySelector(".target");
+    const fieldSelect = document.querySelector("#field");
+
+    const tr = document.createElement("tr");
+    for (key of Object.keys(wifi.DESCRIPTION).sort()) {
+      const col = wifi.DESCRIPTION[key];
+      // 테이블 컬럼 설정
+      const th = document.createElement("th");
+      th.innerHTML = col.toLowerCase();
+      tr.appendChild(th);
+      // 셀렉트 옵션 추가
+      const opt = document.createElement("option");
+      opt.innerHTML = col.toLowerCase();
+      opt.value = key.toLowerCase();
+      fieldSelect.appendChild(opt);
+    }
+    table.appendChild(tr);
+    fieldSelect.addEventListener("change", function (event) {
+      searchField = this.value;
+    });
+  }
+
+  function reset() {
+    const table = document.querySelector(".target");
+    table.innerHTML = "";
+    const fieldSelect = document.querySelector("#field");
+    fieldSelect.innerHTML = "";
+    init();
+  }
+
+  function search() {
+    reset();
+    const term = document.querySelector("#term").value;
+    const termReg = new RegExp(term);
+    const field = searchField;
+    const form = document.querySelector("form");
+    const checked = Array.from(form.category)
+      .map((item) => (item.checked ? item.value : undefined))
+      .filter((i) => !!i);
+
+    for (data of wifi.DATA) {
+      if (checked.length === 0 && term === "") {
+        print(data);
+      } else if (checked.length === 0 && term !== "") {
+        if (data[field].search(termReg) > -1) {
+          print(data);
+        }
+      } else if (checked.length !== 0 && term === "") {
+        if (checked.includes(data.category)) {
+          print(data);
+        }
+      } else if (checked.length !== 0 && term !== "") {
+        if (
+          checked.includes(data.category) &&
+          data[field].search(termReg) > -1
+        ) {
+          print(data);
+        }
+      }
+    }
+  }
+
+  function print(data) {
+    const table = document.querySelector(".target");
+    const tr = document.createElement("tr");
+    for (let key of Object.keys(data).sort()) {
+      const td = document.createElement("td");
+      td.innerHTML = data[key];
+      tr.appendChild(td);
+    }
+    table.appendChild(tr);
+  }
+</script>
