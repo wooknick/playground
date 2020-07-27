@@ -1,0 +1,5 @@
+진행 순서
+
+1. excel -> tsv 내보내기( Numbers )
+2. tsv -> json 컨버팅( https://onlinetsvtools.com/convert-tsv-to-json )
+3. json -> nested json ( convert.js )
